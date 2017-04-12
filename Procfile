@@ -1,1 +1,1 @@
-web: poeIndexer
+web: main.exe
