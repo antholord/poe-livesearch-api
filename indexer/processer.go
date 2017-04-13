@@ -23,13 +23,12 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 	var match bool = true
 
 	if (s.League != "" && s.League == item.League){
-		if (s.Type != "" && s.Type == item.Type){
-			match = true
+		if (s.Type != "" && !(s.Type == item.Type)){
+			return false
+		}else if (s.Name != "" && !(s.Name == item.Name)) {
+			return false
 		}
-		if (s.Name != "" && s.Name == item.Name){
-			match = true
-		}
-		return match;
+		return true
 	}else{
 		return false;
 	}
