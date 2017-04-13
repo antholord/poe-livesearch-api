@@ -18,19 +18,6 @@ func main() {
 	manager = subscription.NewManager()
 	go manager.Run()
 	_ = indexer.Run(manager)
-	/*
-
-		go func() {
-			for {
-				select {
-				case quit := <-manager.Quit:
-					if quit {
-						return
-					}
-				}
-			}
-		}()
-	*/
 	http.HandleFunc("/", index)
 	http.HandleFunc("/ws/", serveWS)
 	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("../web/livesearch/src/client/public"))))
