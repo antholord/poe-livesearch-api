@@ -13,15 +13,11 @@ func init() {
 
 }
 func main() {
-	/*
-		should remove this eventually
-	*/
-	//hub = web.NewHub()
-	//go hub.Run()
-	//searches := make([]*api.ItemSearch, 50)
+
 	manager = subscription.NewManager()
 	go manager.Run()
 	_ = indexer.Run(manager)
+	/*
 
 	go func() {
 		for {
@@ -33,7 +29,7 @@ func main() {
 			}
 		}
 	}()
-
+	*/
 	http.HandleFunc("/", index)
 	http.HandleFunc("/ws/", serveWS)
 	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("../web/livesearch/src/client/public"))))

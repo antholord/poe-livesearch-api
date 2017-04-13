@@ -1,20 +1,11 @@
 {
-	"ImportPath": "github.com/antholord/poeIndexer/main",
+	"ImportPath": "github.com/antholord/poeIndexer",
 	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
+	"Packages": [
+		"github.com/antholord/poeIndexer/main"
+	],
 	"Deps": [
-		{
-			"ImportPath": "github.com/antholord/poeIndexer/api",
-			"Rev": "1da1375ecb2a2cb223570506e875c48599713fea"
-		},
-		{
-			"ImportPath": "github.com/antholord/poeIndexer/indexer",
-			"Rev": "1da1375ecb2a2cb223570506e875c48599713fea"
-		},
-		{
-			"ImportPath": "github.com/antholord/poeIndexer/subscription",
-			"Rev": "1da1375ecb2a2cb223570506e875c48599713fea"
-		},
 		{
 			"ImportPath": "github.com/gorilla/websocket",
 			"Comment": "v1.1.0-29-ga91eba7",
