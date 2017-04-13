@@ -5,6 +5,7 @@ import (
 	"github.com/antholord/poeIndexer/subscription"
 	"log"
 	"net/http"
+	"os"
 )
 
 var manager *subscription.Manager
@@ -19,21 +20,26 @@ func main() {
 	_ = indexer.Run(manager)
 	/*
 
-	go func() {
-		for {
-			select {
-			case quit := <-manager.Quit:
-				if quit {
-					return
+		go func() {
+			for {
+				select {
+				case quit := <-manager.Quit:
+					if quit {
+						return
+					}
 				}
 			}
-		}
-	}()
+		}()
 	*/
 	http.HandleFunc("/", index)
 	http.HandleFunc("/ws/", serveWS)
 	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("../web/livesearch/src/client/public"))))
-	http.ListenAndServe(":1337", nil)
+	port := "1337"
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
+		log.Println("port " + port)
+	}
+	http.ListenAndServe(":" + port, nil)
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
