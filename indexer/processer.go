@@ -19,9 +19,6 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 }
 
 func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
-
-	var match bool = true
-
 	if (s.League != "" && s.League == item.League){
 		if (s.Type != "" && !(s.Type == item.Type)){
 			return false

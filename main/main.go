@@ -26,7 +26,7 @@ func main() {
 		port = os.Getenv("PORT")
 		log.Println("port " + port)
 	}
-	http.ListenAndServe(":" + port, nil)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
