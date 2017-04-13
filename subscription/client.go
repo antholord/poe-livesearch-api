@@ -34,8 +34,12 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
-		log.Println(r.Host)
-		return true},
+		if (r.Host == "poe-livesearch-api.herokuapp.com"){
+			return true
+		}else{
+			return false
+		}
+	},
 }
 
 // Client is a middleman between the websocket connection and the hub.
