@@ -8,7 +8,6 @@ import (
 )
 
 func processStash(stash *api.Stash, m *subscription.Manager) {
-	//log.Println(len(m.SubMap))
 	for _, item := range stash.Items {
 
 		for itemSearch, clients := range m.SubMap {
@@ -16,13 +15,6 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 				go broadcast(clients, api.ItemResult{item, stash.AccountName, stash.LastCharacterName, stash.Id, stash.Label, stash.Type, "",})
 			}
 		}
-
-		/*
-		if item.Type == "Ancient Reliquary Key" {
-			//result :=
-			//log.Printf(msg)
-			output <- api.ItemResult{item, stash.AccountName, stash.LastCharacterName, stash.Id, stash.Label, stash.Type, "",}
-		}*/
 	}
 }
 

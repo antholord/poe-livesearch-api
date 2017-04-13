@@ -67,9 +67,4 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 	}else{
 		log.Println("Client sent invalid search ", search)
 	}
-
-
-
-	//client.readPump()
-
 }

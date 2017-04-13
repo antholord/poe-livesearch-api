@@ -25,7 +25,6 @@ const ninjaAPIURL string = "http://api.poe.ninja/api/Data/GetStats"
 func Run(m *subscription.Manager) bool{
 	//Setup
 	id = getNextChangeID()
-	//output := make(chan api.ItemResult)
 	log.Printf("\nStarting indexing at : %v",id)
 	APIsubscription := api.OpenPublicStashTabSubscription(id)
 
