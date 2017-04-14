@@ -85,11 +85,11 @@ func (c *Client) writePump() {
 			w.Write(message)
 
 			// Add queued chat messages to the current websocket message.
-			n := len(c.Send)
+			/*n := len(c.Send)
 			for i := 0; i < n; i++ {
 				w.Write(newline)
 				w.Write(<-c.Send)
-			}
+			}*/
 
 			if err := w.Close(); err != nil {
 				log.Println("Closing client connection")
