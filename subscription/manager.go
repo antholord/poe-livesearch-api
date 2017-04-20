@@ -43,12 +43,14 @@ func (m *Manager) Run() {
 			m.MapLock.Unlock()
 		case client := <- m.unregister:
 			log.Println("Deleting client")
+			m.MapLock.Lock()
 			delete(m.SubMap[client.ItemSearch], client)
 			log.Println(len(m.SubMap[client.ItemSearch]))
 			if (!(len(m.SubMap[client.ItemSearch])> 0)){
 				delete(m.SubMap, client.ItemSearch)
 			}
 			log.Println(len(m.SubMap))
+			m.MapLock.Unlock()
 		}
 	}
 }
