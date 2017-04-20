@@ -16,7 +16,7 @@ type Manager struct{
 
 	Quit chan bool
 
-	mapLock sync.RWMutex
+	MapLock sync.Mutex
 }
 
 func NewManager() *Manager {
@@ -34,13 +34,13 @@ func (m *Manager) Run() {
 		select {
 		case client := <- m.register:
 			log.Println("Trying to register client")
-			m.mapLock.Lock()
+			m.MapLock.Lock()
 			if _, ok := m.SubMap[client.ItemSearch]; !ok {
 				log.Println("New search, creating client map")
 				m.SubMap[client.ItemSearch] = make(map[*Client]bool)
 			}
 			m.SubMap[client.ItemSearch][client] = true
-			m.mapLock.Unlock()
+			m.MapLock.Unlock()
 		case client := <- m.unregister:
 			log.Println("Deleting client")
 			delete(m.SubMap[client.ItemSearch], client)

@@ -9,12 +9,13 @@ import (
 
 func processStash(stash *api.Stash, m *subscription.Manager) {
 	for _, item := range stash.Items {
-
+		m.MapLock.Lock()
 		for itemSearch, clients := range m.SubMap {
 			if (matchesCriterias(itemSearch, &item)){
 				go broadcast(clients, api.ItemResult{item, stash.AccountName, stash.LastCharacterName, stash.Id, stash.Label, stash.Type, "",})
 			}
 		}
+		m.MapLock.Unlock()
 	}
 }
 
