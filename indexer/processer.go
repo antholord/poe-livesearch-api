@@ -37,4 +37,5 @@ func broadcast(clients map[*subscription.Client]bool, s api.ItemResult){
 		json, _ := easyjson.Marshal(s)
 		client.Send <- json
 	}
+	return
 }
