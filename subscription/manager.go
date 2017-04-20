@@ -3,6 +3,7 @@ package subscription
 import (
 	"net/http"
 	"log"
+	"sync"
 )
 
 type Manager struct{
@@ -14,6 +15,8 @@ type Manager struct{
 	unregister chan *Client
 
 	Quit chan bool
+
+	mapLock sync.RWMutex
 }
 
 func NewManager() *Manager {
@@ -31,12 +34,13 @@ func (m *Manager) Run() {
 		select {
 		case client := <- m.register:
 			log.Println("Trying to register client")
+			m.mapLock.Lock()
 			if _, ok := m.SubMap[client.ItemSearch]; !ok {
 				log.Println("New search, creating client map")
 				m.SubMap[client.ItemSearch] = make(map[*Client]bool)
 			}
 			m.SubMap[client.ItemSearch][client] = true
-			log.Println(m.SubMap[client.ItemSearch])
+			m.mapLock.Unlock()
 		case client := <- m.unregister:
 			log.Println("Deleting client")
 			delete(m.SubMap[client.ItemSearch], client)
