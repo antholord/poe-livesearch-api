@@ -271,9 +271,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		}
 		switch key {
 		case "name":
-			out.Name = strings.ToLower(Reg.ReplaceAllString(string(in.String()), ""))
+			out.Name = strings.ToUpper(Reg.ReplaceAllString(string(in.String()), ""))
 		case "typeLine":
-			out.Type = strings.ToLower(string(in.String()))
+			out.Type = strings.ToUpper(string(in.String()))
 		case "properties":
 			if in.IsNull() {
 				in.Skip()
@@ -494,7 +494,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		case "icon":
 			out.Icon = string(in.String())
 		case "league":
-			out.League = strings.ToLower(string(in.String()))
+			out.League = strings.ToUpper(string(in.String()))
 		case "id":
 			out.Id = string(in.String())
 		case "identified":

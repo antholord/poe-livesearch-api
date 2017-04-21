@@ -64,7 +64,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println(r.FormValue("league"))
-	search := &ItemSearch{Type : strings.ToLower(r.FormValue("type")), Name : strings.ToLower(r.FormValue("name")), League : strings.ToLower(r.FormValue("league"))}
+	search := &ItemSearch{Type : strings.ToUpper(r.FormValue("type")), Name : strings.ToUpper(r.FormValue("name")), League : strings.ToUpper(r.FormValue("league"))}
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
