@@ -8,7 +8,6 @@ import (
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
 	"regexp"
-	"strings"
 )
 
 // suppress unused package warning
@@ -494,7 +493,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		case "icon":
 			out.Icon = string(in.String())
 		case "league":
-			out.League = strings.ToUpper(string(in.String()))
+			out.League = string(in.String())
 		case "id":
 			out.Id = string(in.String())
 		case "identified":
