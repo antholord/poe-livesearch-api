@@ -8,6 +8,7 @@ import (
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
 	"regexp"
+	"strings"
 )
 
 // suppress unused package warning
@@ -270,9 +271,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		}
 		switch key {
 		case "name":
-			out.Name = Reg.ReplaceAllString(string(in.String()), "")
+			out.Name = strings.ToLower(Reg.ReplaceAllString(string(in.String()), ""))
 		case "typeLine":
-			out.Type = string(in.String())
+			out.Type = strings.ToLower(string(in.String()))
 		case "properties":
 			if in.IsNull() {
 				in.Skip()
@@ -493,7 +494,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		case "icon":
 			out.Icon = string(in.String())
 		case "league":
-			out.League = string(in.String())
+			out.League = strings.ToLower(string(in.String()))
 		case "id":
 			out.Id = string(in.String())
 		case "identified":
@@ -573,9 +574,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		case "talismanTier":
 			out.TalismanTier = int(in.Int())
 		case "prophecyText":
-			out.ProphecyText = string(in.String())
+			//out.ProphecyText = string(in.String())
 		case "prophecyDiffText":
-			out.ProphecyDifficultyText = string(in.String())
+			//out.ProphecyDifficultyText = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
