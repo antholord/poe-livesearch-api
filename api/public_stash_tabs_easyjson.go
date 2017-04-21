@@ -509,7 +509,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 			out.DescriptionText = string(in.String())
 		case "secDescrText":
 			out.SecondDescriptionText = string(in.String())
-		case "flavourText":
+		/*case "flavourText":
 			if in.IsNull() {
 				in.Skip()
 				out.FlavorText = nil
@@ -531,7 +531,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					in.WantComma()
 				}
 				in.Delim(']')
-			}
+			}*/
 		case "artFilename":
 			out.ArtFilename = string(in.String())
 		case "frameType":
@@ -546,7 +546,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 			out.Y = int(in.Int())
 		case "inventoryId":
 			out.InventoryId = string(in.String())
-		case "socketedItems":
+		/*case "socketedItems":
 			if in.IsNull() {
 				in.Skip()
 				out.SocketedItems = nil
@@ -568,15 +568,12 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					in.WantComma()
 				}
 				in.Delim(']')
-			}
+			}*/
 		case "isRelic":
 			out.IsRelic = bool(in.Bool())
 		case "talismanTier":
 			out.TalismanTier = int(in.Int())
-		case "prophecyText":
-			out.ProphecyText = string(in.String())
-		case "prophecyDiffText":
-			out.ProphecyDifficultyText = string(in.String())
+
 		default:
 			in.SkipRecursive()
 		}
