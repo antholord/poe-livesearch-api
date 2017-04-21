@@ -67,6 +67,8 @@ func (s *PublicStashTabSubscription) run(firstChangeId string) {
 			}
 			lastRequestTime = time.Now()
 			tabs := new(PublicStashTabs)
+			//respString,err :=ioutil.ReadAll(response.Body)
+			//log.Println(string(respString))
 			err = easyjson.UnmarshalFromReader(response.Body, tabs)
 			//decoder := json.NewDecoder(response.Body)
 			//err = decoder.Decode(tabs)

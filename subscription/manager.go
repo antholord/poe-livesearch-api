@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"log"
 	"sync"
-	"strings"
 )
 
 type Manager struct{
@@ -64,7 +63,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println(r.FormValue("league"))
-	search := &ItemSearch{Type : strings.ToUpper(r.FormValue("type")), Name : strings.ToUpper(r.FormValue("name")), League : strings.ToUpper(r.FormValue("league"))}
+	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league")}
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
