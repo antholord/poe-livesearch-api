@@ -574,9 +574,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		case "talismanTier":
 			out.TalismanTier = int(in.Int())
 		case "prophecyText":
-			//out.ProphecyText = string(in.String())
+			out.ProphecyText = string(in.String())
 		case "prophecyDiffText":
-			//out.ProphecyDifficultyText = string(in.String())
+			out.ProphecyDifficultyText = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
