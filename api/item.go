@@ -36,6 +36,8 @@ type Item struct {
 	Requirements []ItemProperty `json:"requirements"`
 
 	Sockets []Socket `json:"sockets"`
+	NbSockets int `json:"nbSockets"`
+	BiggestLink int `json:"biggestLink"`
 
 	ExplicitMods []string `json:"explicitMods"`
 	ImplicitMods []string `json:"implicitMods"`

@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"time"
 	"github.com/mailru/easyjson"
+	"log"
 )
 
 type PublicStashTabSubscriptionResult struct {
@@ -72,10 +73,9 @@ func (s *PublicStashTabSubscription) run(firstChangeId string) {
 			err = easyjson.UnmarshalFromReader(response.Body, tabs)
 			//decoder := json.NewDecoder(response.Body)
 			//err = decoder.Decode(tabs)
-			//timeToQuery := time.Now().Sub(lastRequestTime)
-			//log.Println("Unmarshall took : ", timeToQuery)
+			timeToQuery := time.Now().Sub(lastRequestTime)
+			log.Println("Unmarshall took : ", timeToQuery)
 			if err != nil {
-
 				s.Channel <- PublicStashTabSubscriptionResult{
 					Error: err,
 				}

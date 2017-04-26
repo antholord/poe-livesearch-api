@@ -8,6 +8,7 @@ import (
 	"log"
 	"github.com/antholord/poeIndexer/api"
 	"github.com/antholord/poeIndexer/subscription"
+	"time"
 )
 
 func init(){
@@ -27,10 +28,12 @@ func Run(m *subscription.Manager) bool{
 	id = getNextChangeID()
 	log.Printf("\nStarting indexing at : %v",id)
 	APIsubscription := api.OpenPublicStashTabSubscription(id)
-
+	var lastRequestTime time.Time
 	//Loop over results
 	go func() {
 		for result := range APIsubscription.Channel {
+
+			lastRequestTime = time.Now()
 			if result.Error != nil {
 				log.Printf("error: %v", result.Error.Error())
 				continue
@@ -40,6 +43,9 @@ func Run(m *subscription.Manager) bool{
 				count+=len(stash.Items)
 				processStash(&stash, m)
 			}
+
+			timeToQuery := time.Now().Sub(lastRequestTime)
+			log.Println("Processing took : ", timeToQuery)
 			//log.Printf("Processing %v items",count)
 		}
 	}()

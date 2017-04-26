@@ -8,6 +8,7 @@ import (
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
 	"regexp"
+	"sort"
 )
 
 // suppress unused package warning
@@ -269,6 +270,13 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 			continue
 		}
 		switch key {
+		case "league":
+			out.League = string(in.String())
+			/*if (out.League == "Standard" || out.League == "Hardcore" || strings.Contains(out.League, "SSF")){
+				in.WantComma()
+				in.Delim('}')
+				return
+			}*/
 		case "name":
 			out.Name = Reg.ReplaceAllString(string(in.String()), "")
 		case "typeLine":
@@ -325,6 +333,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 				out.Sockets = nil
 			} else {
 				in.Delim('[')
+				var arr [6]int
 				if out.Sockets == nil {
 					if !in.IsDelim(']') {
 						out.Sockets = make([]Socket, 0, 2)
@@ -338,8 +347,17 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					var v9 Socket
 					easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi4(in, &v9)
 					out.Sockets = append(out.Sockets, v9)
+					arr[v9.GroupId] +=1
 					in.WantComma()
 				}
+				if (len(out.Sockets)>0){
+					out.NbSockets = len(out.Sockets)
+					sort.Slice(arr[:], func(i, j int) bool {
+						return arr[i] > arr[j]
+					})
+					out.BiggestLink = arr[0]
+				}
+
 				in.Delim(']')
 			}
 		case "explicitMods":
@@ -492,8 +510,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 			out.ItemLevel = int(in.Int())
 		case "icon":
 			out.Icon = string(in.String())
-		case "league":
-			out.League = string(in.String())
+
 		case "id":
 			out.Id = string(in.String())
 		case "identified":
