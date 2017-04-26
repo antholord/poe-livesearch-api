@@ -64,23 +64,23 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	minSockets, err := strconv.ParseInt(r.FormValue("minSockets"), 10, 64);
-	maxSockets, err := strconv.ParseInt(r.FormValue("maxSockets"), 10, 64);
-	minLinks, err := strconv.ParseInt(r.FormValue("minLinks"), 10, 64);
-	maxLinks, err := strconv.ParseInt(r.FormValue("maxLinks"), 10, 64);
-	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 64);
-	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 64);
+	minSockets, err := strconv.ParseInt(r.FormValue("minSockets"), 10, 32)
+	maxSockets, err := strconv.ParseInt(r.FormValue("maxSockets"), 10, 32)
+	minLinks, err := strconv.ParseInt(r.FormValue("minLinks"), 10, 32)
+	maxLinks, err := strconv.ParseInt(r.FormValue("maxLinks"), 10, 32)
+	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 32)
+	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 32)
 	log.Println(maxIlvl)
 	search := &ItemSearch{
 		Type : r.FormValue("type"),
 		Name : r.FormValue("name"),
 		League : r.FormValue("league"),
-		MinSockets : minSockets,
-		MaxSockets : maxSockets,
-		MinLinks : minLinks,
-		MaxLinks : maxLinks,
-		MinIlvl : minIlvl,
-		MaxIlvl : maxIlvl,
+		MinSockets : int(minSockets),
+		MaxSockets : int(maxSockets),
+		MinLinks : int(minLinks),
+		MaxLinks : int(maxLinks),
+		MinIlvl : int(minIlvl),
+		MaxIlvl : int(maxIlvl),
 	}
 	log.Println(search)
 	//if search valid
