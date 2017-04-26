@@ -63,8 +63,25 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	log.Println(r.FormValue("minSockets"))
-	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league"), MinSockets : strconv.ParseInt(r.FormValue("minSockets"), 10, 64), MaxSockets : strconv.ParseInt(r.FormValue("maxSockets"), 10, 64), MinLinks : strconv.ParseInt(r.FormValue("minLinks"), 10, 64), MaxLinks : strconv.ParseInt(r.FormValue("maxLinks"), 10, 64), MinIlvl : strconv.ParseInt(r.FormValue("minIlvl"), 10, 64), MaxIlvl : strconv.ParseInt(r.FormValue("maxIlvl"), 10, 64)}
+
+	minSockets, err := strconv.ParseInt(r.FormValue("minSockets"), 10, 64);
+	maxSockets, err := strconv.ParseInt(r.FormValue("maxSockets"), 10, 64);
+	minLinks, err := strconv.ParseInt(r.FormValue("minLinks"), 10, 64);
+	maxLinks, err := strconv.ParseInt(r.FormValue("maxLinks"), 10, 64);
+	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 64);
+	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 64);
+	log.Println(maxIlvl)
+	search := &ItemSearch{
+		Type : r.FormValue("type"),
+		Name : r.FormValue("name"),
+		League : r.FormValue("league"),
+		MinSockets : minSockets,
+		MaxSockets : maxSockets,
+		MinLinks : minLinks,
+		MaxLinks : maxLinks,
+		MinIlvl : minIlvl,
+		MaxIlvl : maxIlvl,
+	}
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
