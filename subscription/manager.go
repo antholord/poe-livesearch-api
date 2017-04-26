@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"log"
 	"sync"
+	"strconv"
 )
 
 type Manager struct{
@@ -63,7 +64,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println(r.FormValue("minSockets"))
-	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league"), MinSockets : r.FormValue("minSockets"), MaxSockets : r.FormValue("maxSockets"), MinLinks : r.FormValue("minLinks"), MaxLinks : r.FormValue("maxLinks"), MinIlvl : r.FormValue("minIlvl"), MaxIlvl : r.FormValue("maxIlvl")}
+	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league"), MinSockets : strconv.ParseInt(r.FormValue("minSockets"), 10, 64), MaxSockets : strconv.ParseInt(r.FormValue("maxSockets"), 10, 64), MinLinks : strconv.ParseInt(r.FormValue("minLinks"), 10, 64), MaxLinks : strconv.ParseInt(r.FormValue("maxLinks"), 10, 64), MinIlvl : strconv.ParseInt(r.FormValue("minIlvl"), 10, 64), MaxIlvl : strconv.ParseInt(r.FormValue("maxIlvl"), 10, 64)}
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
