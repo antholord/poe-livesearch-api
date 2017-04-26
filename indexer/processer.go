@@ -34,7 +34,7 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 	}else if(s.MaxSockets != 0 && item.NbSockets >= s.MaxSockets){
 		return false
 	}else if(s.MinLinks != 0 && item.BiggestLink <= s.MinLinks){
-		log.Println("Refused " + item.BiggestLink + " " + s.MinLinks)
+		log.Println("Refused " + string(item.BiggestLink) + " " + string(s.MinLinks))
 		return false
 	}else if(s.MaxLinks != 0 && item.BiggestLink >= s.MaxLinks){
 		return false
