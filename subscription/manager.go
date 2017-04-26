@@ -63,7 +63,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println(r.FormValue("league"))
-	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league")}
+	search := &ItemSearch{Type : r.FormValue("type"), Name : r.FormValue("name"), League : r.FormValue("league"), MinSockets : r.FormValue("minSockets"), MaxSockets : r.FormValue("maxSockets"), MinLinks : r.FormValue("minLinks"), MaxLinks : r.FormValue("maxLinks"), MinIlvl : r.FormValue("minIlvl"), MaxIlvl : r.FormValue("maxIlvl")}
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
