@@ -24,8 +24,9 @@ func main() {
 	port := "1337"
 	if os.Getenv("PORT") != "" {
 		port = os.Getenv("PORT")
-		log.Println("port " + port)
+
 	}
+	log.Println("port " + port)
 	http.ListenAndServe(":"+port, nil)
 }
 

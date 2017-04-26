@@ -29,16 +29,15 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 		return false
 	}else if(s.Name != "" && s.Name != item.Name) {
 		return false
-	}else if(s.MinSockets != 0 && item.NbSockets <= s.MinSockets){
+	}else if(s.MinSockets != 0 && item.NbSockets < s.MinSockets){
 		return false
-	}else if(s.MaxSockets != 0 && item.NbSockets >= s.MaxSockets){
+	}else if(s.MaxSockets != 0 && item.NbSockets > s.MaxSockets){
 		return false
-	}else if(s.MinLinks != 0 && item.BiggestLink <= s.MinLinks){
-		log.Println("Refused " + string(item.BiggestLink) + " " + string(s.MinLinks))
+	}else if(s.MinLinks != 0 && item.BiggestLink < s.MinLinks){
 		return false
-	}else if(s.MaxLinks != 0 && item.BiggestLink >= s.MaxLinks){
+	}else if(s.MaxLinks != 0 && item.BiggestLink > s.MaxLinks){
 		return false
-	}else if(s.MaxIlvl != 0 && item.ItemLevel >= s.MaxIlvl){
+	}else if(s.MaxIlvl != 0 && item.ItemLevel > s.MaxIlvl){
 		return false
 	}
 
@@ -52,6 +51,7 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 	}else{
 		return false;
 	}*/
+	log.Println(item.Name)
 	return true
 }
 
