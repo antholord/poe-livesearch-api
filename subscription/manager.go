@@ -85,7 +85,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 	log.Println(search)
 	//if search valid
 	if (search.League != "" && (search.Type != "" || search.Name != "")){
-		client := &Client{manager: manager, conn: conn, Send: make(chan []byte, 256), ItemSearch : search}
+		client := &Client{manager: manager, conn: conn, Send: make(chan []byte, 1024), ItemSearch : search}
 		manager.register <- client
 		go client.writePump()
 	}else{

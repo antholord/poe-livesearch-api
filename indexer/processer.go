@@ -24,19 +24,19 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 	if (s.League == "" || s.League != item.League){
 		return false
-	}else if(s.Type != "" && !(s.Type == item.Type)){
+	}else if(s.Type != "" && s.Type != item.Type){
 		return false
-	}else if(s.Name != "" && !(s.Name == item.Name)) {
+	}else if(s.Name != "" && s.Name != item.Name) {
 		return false
-	}else if(s.MinSockets != 0 && item.NbSockets < s.MinSockets){
+	}else if(s.MinSockets != 0 && item.NbSockets <= s.MinSockets){
 		return false
-	}else if(s.MaxSockets != 0 && item.NbSockets > s.MaxSockets){
+	}else if(s.MaxSockets != 0 && item.NbSockets >= s.MaxSockets){
 		return false
-	}else if(s.MinLinks != 0 && item.BiggestLink < s.MinLinks){
+	}else if(s.MinLinks != 0 && item.BiggestLink <= s.MinLinks){
 		return false
-	}else if(s.MaxLinks != 0 && item.BiggestLink > s.MaxLinks){
+	}else if(s.MaxLinks != 0 && item.BiggestLink >= s.MaxLinks){
 		return false
-	}else if(s.MaxIlvl != 0 && item.ItemLevel > s.MaxIlvl){
+	}else if(s.MaxIlvl != 0 && item.ItemLevel >= s.MaxIlvl){
 		return false
 	}
 
