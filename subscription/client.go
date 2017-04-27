@@ -51,7 +51,7 @@ type Client struct {
 	// Buffered channel of outbound messages.
 	Send chan []byte
 
-	ItemSearch *ItemSearch
+	ItemSearch ItemSearch
 }
 
 // writePump pumps messages from the hub to the websocket connection.

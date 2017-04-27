@@ -10,16 +10,15 @@ import (
 )
 
 func processStash(stash *api.Stash, m *subscription.Manager) {
-
+	m.MapLock.Lock()
 	for _, item := range stash.Items {
-		m.MapLock.Lock()
 		for itemSearch, clients := range m.SubMap {
-			if (matchesCriterias(itemSearch, &item)){
+			if (matchesCriterias(&itemSearch, &item)){
 				go broadcast(clients, api.ItemResult{item, stash.AccountName, stash.LastCharacterName, stash.Id, stash.Label, stash.Type, "",})
 			}
 		}
-		m.MapLock.Unlock()
 	}
+	m.MapLock.Unlock()
 }
 
 func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{

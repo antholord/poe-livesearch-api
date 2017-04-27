@@ -8,7 +8,7 @@ import (
 )
 
 type Manager struct{
-	SubMap map[*ItemSearch]map[*Client]bool
+	SubMap map[ItemSearch]map[*Client]bool
 	// Register requests from the clients.
 	register chan *Client
 
@@ -22,7 +22,7 @@ type Manager struct{
 
 func NewManager() *Manager {
 	return &Manager{
-		SubMap:   make(map[*ItemSearch]map[*Client]bool),
+		SubMap:   make(map[ItemSearch]map[*Client]bool),
 		register:   make(chan *Client),
 		Quit:	make(chan bool),
 		unregister: make(chan *Client),
@@ -36,9 +36,12 @@ func (m *Manager) Run() {
 		case client := <- m.register:
 			log.Println("Trying to register client")
 			m.MapLock.Lock()
+			log.Println(client.ItemSearch);
 			if _, ok := m.SubMap[client.ItemSearch]; !ok {
 				log.Println("New search, creating client map")
 				m.SubMap[client.ItemSearch] = make(map[*Client]bool)
+			}else{
+				log.Println("Adding client to existing search!")
 			}
 			m.SubMap[client.ItemSearch][client] = true
 			m.MapLock.Unlock()
@@ -70,7 +73,7 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 	maxLinks, err := strconv.ParseInt(r.FormValue("maxLinks"), 10, 32)
 	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 32)
 	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 32)
-	search := &ItemSearch{
+	search := ItemSearch{
 		Type : r.FormValue("type"),
 		Name : r.FormValue("name"),
 		League : r.FormValue("league"),

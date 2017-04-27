@@ -8,7 +8,6 @@ import (
 	"log"
 	"github.com/antholord/poeIndexer/api"
 	"github.com/antholord/poeIndexer/subscription"
-
 )
 
 func init(){
