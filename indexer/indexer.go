@@ -40,7 +40,12 @@ func Run(m *subscription.Manager) bool{
 			var count int = 0;
 			for _, stash := range result.PublicStashTabs.Stashes {
 				count+=len(stash.Items)
-				processStash(&stash, m)
+				if (len(m.SubMap)>0){
+					processStash(&stash, m)
+				}else{
+					//gatherItemData(&stash)
+					//Scan data for types
+				}
 			}
 
 			//timeToQuery := time.Now().Sub(lastRequestTime)
@@ -49,6 +54,10 @@ func Run(m *subscription.Manager) bool{
 		}
 	}()
 	return true
+
+}
+
+func gatherItemData(stash *api.Stash){
 
 }
 

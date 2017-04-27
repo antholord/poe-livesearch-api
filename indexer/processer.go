@@ -34,13 +34,13 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 		return false
 	}else if(s.MinLinks != 0 && item.BiggestLink < s.MinLinks){
 		return false
-	}else if(s.MaxLinks != 0 && item.BiggestLink > s.MaxLinks){
+	}else if(s.MaxLinks != 0 && item.BiggestLink > s.MaxLinks) {
+		return false
+	}else if(s.MinIlvl != 0 && item.ItemLevel < s.MinIlvl){
 		return false
 	}else if(s.MaxIlvl != 0 && item.ItemLevel > s.MaxIlvl){
 		return false
 	}
-
-
 	return true
 }
 

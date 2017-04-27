@@ -70,7 +70,7 @@ func (c *Client) writePump() {
 	for {
 		select {
 		case message, ok := <-c.Send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			//c.conn.SetWriteDeadline(0)
 			if !ok {
 				// The hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
