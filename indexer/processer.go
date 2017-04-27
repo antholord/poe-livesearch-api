@@ -6,6 +6,7 @@ import (
 	"github.com/antholord/poeIndexer/subscription"
 	"github.com/mailru/easyjson"
 	"log"
+	"strconv"
 )
 
 func processStash(stash *api.Stash, m *subscription.Manager) {
@@ -19,7 +20,6 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 		}
 		m.MapLock.Unlock()
 	}
-
 }
 
 func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
@@ -41,21 +41,12 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool{
 		return false
 	}
 
-	/*if (s.League != "" && s.League == item.League){
-		if (s.Type != "" && !(s.Type == item.Type)){
-			return false
-		}else if (s.Name != "" && !(s.Name == item.Name)) {
-			return false
-		}
-		return true
-	}else{
-		return false;
-	}*/
-	log.Println(item.Name)
+
 	return true
 }
 
 func broadcast(clients map[*subscription.Client]bool, s api.ItemResult){
+	log.Println("Broadcasting to " + strconv.Itoa(len(clients)) + " clients item : " + s.Item.Name)
 	for client,_:= range clients {
 		json, _ := easyjson.Marshal(s)
 		client.Send <- json

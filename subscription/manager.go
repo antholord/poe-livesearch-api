@@ -70,7 +70,6 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 	maxLinks, err := strconv.ParseInt(r.FormValue("maxLinks"), 10, 32)
 	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 32)
 	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 32)
-	log.Println(maxIlvl)
 	search := &ItemSearch{
 		Type : r.FormValue("type"),
 		Name : r.FormValue("name"),
