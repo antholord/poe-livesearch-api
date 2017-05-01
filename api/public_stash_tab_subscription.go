@@ -2,11 +2,12 @@
 package api
 
 import (
+	"github.com/mailru/easyjson"
 	"net/http"
 	"net/url"
 	"time"
-	"github.com/mailru/easyjson"
-	//"log"
+	"log"
+	"github.com/antholord/poeIndexer/custom"
 )
 
 type PublicStashTabSubscriptionResult struct {
@@ -18,6 +19,7 @@ type PublicStashTabSubscription struct {
 	Channel      chan PublicStashTabSubscriptionResult
 	closeChannel chan bool
 	host         string
+	customParser *custom.CustomParser
 }
 
 // Opens a subscription that begins with the given change id. To subscribe from the beginning, pass
@@ -28,10 +30,12 @@ func OpenPublicStashTabSubscription(firstChangeId string) *PublicStashTabSubscri
 
 // Opens a subscription for an alternative host. Can be used for beta or foreign servers.
 func OpenPublicStashTabSubscriptionForHost(host, firstChangeId string) *PublicStashTabSubscription {
+	p := custom.NewCustomParser()
 	ret := &PublicStashTabSubscription{
 		Channel:      make(chan PublicStashTabSubscriptionResult),
 		closeChannel: make(chan bool),
 		host:         host,
+		customParser: p,
 	}
 	go ret.run(firstChangeId)
 	return ret
@@ -68,13 +72,15 @@ func (s *PublicStashTabSubscription) run(firstChangeId string) {
 			}
 			lastRequestTime = time.Now()
 			tabs := new(PublicStashTabs)
+			tabs.Parser = s.customParser
 			//respString,err :=ioutil.ReadAll(response.Body)
 			//log.Println(string(respString))
 			err = easyjson.UnmarshalFromReader(response.Body, tabs)
+			//s.customParser.addCategories(&tabs)
 			//decoder := json.NewDecoder(response.Body)
 			//err = decoder.Decode(tabs)
-			//timeToQuery := time.Now().Sub(lastRequestTime)
-			//log.Println("Unmarshall took : ", timeToQuery)
+			timeToQuery := time.Now().Sub(lastRequestTime)
+			log.Println("Unmarshall took : ", timeToQuery)
 			if err != nil {
 				s.Channel <- PublicStashTabSubscriptionResult{
 					Error: err,

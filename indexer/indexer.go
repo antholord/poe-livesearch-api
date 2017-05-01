@@ -1,31 +1,32 @@
 package indexer
 
 import (
-	"net/http"
 	"encoding/json"
-	"io/ioutil"
 	"fmt"
-	"log"
 	"github.com/antholord/poeIndexer/api"
 	"github.com/antholord/poeIndexer/subscription"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
-func init(){
+func init() {
 
 }
 
 type ninjaJSON struct {
-	Id int `json:"id"`
+	Id           int    `json:"id"`
 	NextChangeId string `json:"nextChangeId"`
 }
 
 var id string
+
 const ninjaAPIURL string = "http://api.poe.ninja/api/Data/GetStats"
 
-func Run(m *subscription.Manager) bool{
+func Run(m *subscription.Manager) bool {
 	//Setup
 	id = getNextChangeID()
-	log.Printf("\nStarting indexing at : %v",id)
+	log.Printf("\nStarting indexing at : %v", id)
 	APIsubscription := api.OpenPublicStashTabSubscription(id)
 	//var lastRequestTime time.Time
 	//Loop over results
@@ -37,12 +38,12 @@ func Run(m *subscription.Manager) bool{
 				log.Printf("error: %v", result.Error.Error())
 				continue
 			}
-			var count int = 0;
+			var count int = 0
 			for _, stash := range result.PublicStashTabs.Stashes {
-				count+=len(stash.Items)
-				if (len(m.SubMap)>0){
+				count += len(stash.Items)
+				if len(m.SubMap) > 0 {
 					processStash(&stash, m)
-				}else{
+				} else {
 					//gatherItemData(&stash)
 					//Scan data for types
 				}
@@ -57,18 +58,18 @@ func Run(m *subscription.Manager) bool{
 
 }
 
-func gatherItemData(stash *api.Stash){
+func gatherItemData(stash *api.Stash) {
 
 }
 
-func getNextChangeID() string{
+func getNextChangeID() string {
 	//Get ninja API info
 	res, err := http.Get(ninjaAPIURL)
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
-	resp , _:= ioutil.ReadAll(res.Body)
+	resp, _ := ioutil.ReadAll(res.Body)
 
 	defer res.Body.Close()
 	//Unmarshal response into s
@@ -82,7 +83,7 @@ func getNextChangeID() string{
 
 	if s.NextChangeId != "" {
 		fmt.Print(s.NextChangeId)
-	}else {
+	} else {
 		panic("No change ID found")
 	}
 	return s.NextChangeId

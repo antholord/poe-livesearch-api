@@ -1,9 +1,7 @@
 package subscription
 
-
-type Subscription struct{
-	Clients map[*Client]bool
+type Subscription struct {
+	Clients    map[*Client]bool
 	ItemSearch ItemSearch
-	Output chan string
+	Output     chan string
 }
-

@@ -1,6 +1,8 @@
 //Credit to https://github.com/ccbrown/poe-go/
 package api
 
+import "github.com/antholord/poeIndexer/custom"
+
 type Socket struct {
 	GroupId   int    `json:"group"`
 	Attribute string `json:"attr"`
@@ -8,7 +10,7 @@ type Socket struct {
 
 type ItemProperty struct {
 	Name        string        `json:"name"`
-	Values      []interface{} `json:"values"`
+	Values      [][]interface{} `json:"values"`
 	DisplayMode int           `json:"displayMode"`
 }
 
@@ -28,16 +30,17 @@ const (
 )
 
 type Item struct {
-	// Names for some items may include markup. For example: <<set:MS>><<set:M>><<set:S>>Roth's Reach
 	Name string `json:"name"`
 	Type string `json:"typeLine"`
+	FName string
 
 	Properties   []ItemProperty `json:"properties"`
 	Requirements []ItemProperty `json:"requirements"`
+	CProperties  custom.CProperties
 
-	Sockets []Socket `json:"sockets"`
-	NbSockets int `json:"nbSockets"`
-	BiggestLink int `json:"biggestLink"`
+	Sockets     []Socket `json:"sockets"`
+	NbSockets   int      `json:"nbSockets"`
+	BiggestLink int      `json:"biggestLink"`
 
 	ExplicitMods []string `json:"explicitMods"`
 	ImplicitMods []string `json:"implicitMods"`

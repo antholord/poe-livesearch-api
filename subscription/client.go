@@ -1,12 +1,10 @@
-
-
 package subscription
 
 import (
-	"time"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"time"
 )
 
 const (
@@ -32,10 +30,10 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
-		log.Println(r.Host);
-		if (r.Host == "poe-livesearch-api.herokuapp.com" || r.Host == "localhost:1337"){
+		log.Println(r.Host)
+		if r.Host == "poe-livesearch-api.herokuapp.com" || r.Host == "localhost:1337" {
 			return true
-		}else{
+		} else {
 			return false
 		}
 	},
@@ -92,7 +90,7 @@ func (c *Client) writePump() {
 
 			if err := w.Close(); err != nil {
 				log.Println("Closing client connection")
-			return
+				return
 			}
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
