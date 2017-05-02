@@ -6,26 +6,26 @@ import (
 )
 
 type CProperties struct {
-	Armour  float64
-	Es      float64
-	Evasion float64
-	Block   float64
-	Crit    float64
-	Quality float64
-	WeaponRange float64
-	Type string
-	Category string
-	SubCategory string
-	MapTier float64
+	Armour  float64 `json:"armour"`
+	Es      float64 `json:"es"`
+	Evasion float64 `json:"evasion"`
+	Block   float64 `json:"block"`
+	Crit    float64 `json:"crit"`
+	Quality float64 `json:"quality"`
+	WeaponRange float64 `json:"weaponRange"`
+	Type string `json:"type"`
+	Category string `json:"category"`
+	SubCategory string `json:"subCategory"`
+	MapTier float64 `json:"mapTier"`
 
-	APS   float64
-	Phys  float64
-	Ele   float64
-	Chaos float64
-	Cdps  float64
-	Pdps  float64
-	Edps  float64
-	Dps   float64
+	APS   float64 `json:"aps"`
+	Phys  float64 `json:"phys"`
+	Ele   float64 `json:"ele"`
+	Chaos float64 `json:"chaos"`
+	Cdps  float64 `json:"cdps"`
+	Pdps  float64 `json:"pdps"`
+	Edps  float64 `json:"edps"`
+	Dps   float64 `json:"dps"`
 }
 
 func ParseDmgRange(s interface{}) float64 {

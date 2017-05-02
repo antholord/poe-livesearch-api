@@ -36,7 +36,7 @@ type Item struct {
 
 	Properties   []ItemProperty `json:"properties"`
 	Requirements []ItemProperty `json:"requirements"`
-	CProperties  custom.CProperties
+	CProperties  custom.CProperties `json:"customProperties"`
 
 	Sockets     []Socket `json:"sockets"`
 	NbSockets   int      `json:"nbSockets"`

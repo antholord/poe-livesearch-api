@@ -36,7 +36,8 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool {
 				return false
 			}
 		}
-	} else if (s.Category != "" && s.Category != item.CProperties.Category) {
+	}
+	if (s.Category != "" && s.Category != item.CProperties.Category) {
 		return false
 	} else if (s.SubCategory != "" && s.SubCategory != item.CProperties.SubCategory) {
 		return false
@@ -51,7 +52,6 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool {
 	} else if s.MaxLinks != 0 && item.BiggestLink > s.MaxLinks {
 		return false
 	} else if s.MinIlvl != 0 && item.ItemLevel < s.MinIlvl {
-
 		return false
 	} else if s.MaxIlvl != 0 && item.ItemLevel > s.MaxIlvl {
 		return false
