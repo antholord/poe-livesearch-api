@@ -11,6 +11,7 @@ import (
 	"sort"
 	"github.com/antholord/poeIndexer/custom"
 	"strconv"
+	"strings"
 )
 
 // suppress unused package warning
@@ -610,6 +611,8 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 	}else{
 		out.FName = out.Name + out.Type
 	}
+	out.FNameUpper = strings.ToUpper(out.FName)
+	//if (out.FrameType == 1) {log.Println(out.FName, "---", out.Type)}
 
 	in.Delim('}')
 	if isTopLevel {

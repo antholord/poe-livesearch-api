@@ -13,9 +13,16 @@ type Category struct {
 }
 type CustomParser struct {
 	BasesMap map[string]Category
+	ItemsMap map[string]bool
 }
 func NewCustomParser() *CustomParser {
+	return &CustomParser{
+		BasesMap : ParseItemTypes(),
+		ItemsMap : ParseItems(),
+	}
+}
 
+func ParseItemTypes() map[string]Category{
 	file, e := ioutil.ReadFile("../itemData/item-types.json")
 	if e != nil{
 		log.Println(e)
@@ -30,8 +37,22 @@ func NewCustomParser() *CustomParser {
 			}
 		}
 	}
-	return &CustomParser{
-		BasesMap : m,
+	return m
+}
+
+func ParseItems() map[string]bool {
+	file, e := ioutil.ReadFile("../itemData/items.json")
+	if e != nil{
+		log.Println(e)
 	}
+	var data itemData.ItemData
+	_ = json.Unmarshal(file, &data)
+	m := make(map[string]bool)
+
+	for _, item := range data.Items {
+		m[item] = true
+	}
+
+	return m
 }
 

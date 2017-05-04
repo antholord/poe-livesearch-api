@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
-	"strings"
+	"github.com/antholord/poeIndexer/custom"
 )
 
 type Manager struct {
@@ -20,14 +20,17 @@ type Manager struct {
 	Quit chan bool
 
 	MapLock sync.Mutex
+
+	CustomParser *custom.CustomParser
 }
 
-func NewManager() *Manager {
+func NewManager(cp *custom.CustomParser) *Manager {
 	return &Manager{
 		SubMap:     make(map[ItemSearch]map[*Client]bool),
 		register:   make(chan *Client),
 		Quit:       make(chan bool),
 		unregister: make(chan *Client),
+		CustomParser: cp,
 	}
 }
 
@@ -74,11 +77,10 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 	minIlvl, err := strconv.ParseInt(r.FormValue("minIlvl"), 10, 32)
 	maxIlvl, err := strconv.ParseInt(r.FormValue("maxIlvl"), 10, 32)
 
-	multiName := strings.Contains(r.FormValue("name"), "|")
+
 	search := ItemSearch{
+		CustomParser: manager.CustomParser,
 		Type:       r.FormValue("type"),
-		Name:       r.FormValue("name"),
-		MultiName:  multiName,
 		Category: r.FormValue("category"),
 		SubCategory : r.FormValue("subCategory"),
 		League:     r.FormValue("league"),
@@ -89,10 +91,10 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		MinIlvl:    int(minIlvl),
 		MaxIlvl:    int(maxIlvl),
 	}
-	log.Println(search)
-	log.Println(search.MinIlvl)
+	search.GenerateName(r.FormValue("name"), manager.CustomParser)
+
 	//if search valid
-	if search.League != "" && (search.Type != "" || search.Name != "" || search.Category != "" || search.SubCategory != "") {
+	if search.League != "" && (search.Type != "" || search.NameObj.Name != "" || search.Category != "" || search.SubCategory != "") {
 		client := &Client{manager: manager, conn: conn, Send: make(chan []byte, 1024), ItemSearch: search}
 		manager.register <- client
 		go client.writePump()

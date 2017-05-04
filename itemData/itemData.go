@@ -8,5 +8,6 @@ type ItemData struct {
 			Base []string `json:"value"`
 		} `json:"value"`
 	} `json:"itemTypes"`
+	Items []string `json:"items"`
 }
 

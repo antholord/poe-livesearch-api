@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/antholord/poeIndexer/custom"
 	"github.com/antholord/poeIndexer/indexer"
 	"github.com/antholord/poeIndexer/subscription"
 	"log"
@@ -9,13 +10,14 @@ import (
 )
 
 var manager *subscription.Manager
+var customParser = custom.NewCustomParser()
 
 func init() {
 
 }
 func main() {
 
-	manager = subscription.NewManager()
+	manager = subscription.NewManager(customParser)
 	go manager.Run()
 	_ = indexer.Run(manager)
 	http.HandleFunc("/", index)

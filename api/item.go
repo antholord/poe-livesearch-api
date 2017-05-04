@@ -33,6 +33,7 @@ type Item struct {
 	Name string `json:"name"`
 	Type string `json:"typeLine"`
 	FName string
+	FNameUpper string
 
 	Properties   []ItemProperty `json:"properties"`
 	Requirements []ItemProperty `json:"requirements"`

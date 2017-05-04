@@ -22,28 +22,37 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 }
 
 func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool {
+
 	if s.League == "" || s.League != item.League {
 		return false
-	} else if s.Type != "" && s.Type != item.Type {
+	//} else if s.Type != "" && s.Type != item.Type {
+	} else if s.Type != "" && !strings.Contains(item.Type, s.Type) {
 		return false
-	} else if s.Name != "" {
-		if (!s.MultiName){
-			if (s.Name != item.FName){
+	//If search has a name
+	} else if s.NameObj.Name != "" {
+		//If its a single name, and not a concanated one
+		if (!s.NameObj.IsMultiName){
+			//Simple equality comparison if the name entered is in items list
+			//Contains check if the name entered is partial or not in the items list
+			if ((s.NameObj.IsFullName && s.NameObj.Name != item.FName) || (!s.NameObj.IsFullName && !strings.Contains(item.FNameUpper, s.NameObj.Name))){
 				return false
 			}
 		}else {
-			if (!strings.Contains(s.Name, item.FName)) {
-				return false
+			//There are multiple concanated names
+			var found bool = false
+			for _, i := range s.NameObj.MultiName {
+				if ((i.IsFullName && i.Name == item.FName) || (!i.IsFullName && strings.Contains(item.FNameUpper, i.Name))){
+					found = true
+				}
 			}
+			if (!found){ return false }
 		}
 	}
 	if (s.Category != "" && s.Category != item.CProperties.Category) {
 		return false
 	} else if (s.SubCategory != "" && s.SubCategory != item.CProperties.SubCategory) {
 		return false
-	} else if (s.Type != "" && s.Type != item.Type) {
-		return false
-	}else if s.MinSockets != 0 && item.NbSockets < s.MinSockets {
+	} else if s.MinSockets != 0 && item.NbSockets < s.MinSockets {
 		return false
 	} else if s.MaxSockets != 0 && item.NbSockets > s.MaxSockets {
 		return false
@@ -60,7 +69,7 @@ func matchesCriterias(s *subscription.ItemSearch, item *api.Item) bool {
 }
 
 func broadcast(clients map[*subscription.Client]bool, s api.ItemResult) {
-	log.Println("Broadcasting to " + strconv.Itoa(len(clients)) + " clients item : " + s.Item.Name)
+	log.Println("Broadcasting to " + strconv.Itoa(len(clients)) + " clients item : " + s.Item.Name + " --- " + s.Item.Type )
 	for client, _ := range clients {
 		json, _ := easyjson.Marshal(s)
 		client.Send <- json
