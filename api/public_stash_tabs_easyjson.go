@@ -10,8 +10,8 @@ import (
 	"regexp"
 	"sort"
 	"github.com/antholord/poeIndexer/custom"
-	"strconv"
 	"strings"
+	"strconv"
 )
 
 // suppress unused package warning
@@ -21,9 +21,12 @@ var (
 	_   *jwriter.Writer
 	_   easyjson.Marshaler
 	Reg *regexp.Regexp = regexp.MustCompile(`([<<])\S+([>>])`)
+	ModReg *regexp.Regexp = regexp.MustCompile("(?:\\-?\\d*\\.)?\\-?\\d+")
+	leagueMap map[string]int = make(map[string]int)
 )
 
 func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi(in *jlexer.Lexer, out *PublicStashTabs) {
+	leagueMap = make(map[string]int)
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -73,6 +76,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi(in *jlexer.Lexer, out
 		in.WantComma()
 	}
 	in.Delim('}')
+
 	if isTopLevel {
 		in.Consumed()
 	}
@@ -131,7 +135,7 @@ func (v *PublicStashTabs) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi(l, v)
 }
 func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi1(in *jlexer.Lexer, out *Stash, p *custom.CustomParser) {
-
+	var leagueChecked bool
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -176,10 +180,23 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi1(in *jlexer.Lexer, ou
 					out.Items = (out.Items)[:0]
 				}
 				for !in.IsDelim(']') {
+					if (leagueChecked){
+						in.SkipRecursive()
+						in.WantComma()
+						continue
+					}
 					var v4 Item
 					easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in, &v4, p)
-					out.Items = append(out.Items, v4)
+					if (!leagueChecked && (v4.League == "Standard" || v4.League == "Hardcore" || strings.Contains(v4.League, "SSF"))){
+						leagueChecked = true
+					}else{
+						out.Items = append(out.Items, v4)
+					}
+
+					leagueMap[v4.League]+=1
+
 					in.WantComma()
+
 				}
 				in.Delim(']')
 			}
@@ -191,6 +208,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi1(in *jlexer.Lexer, ou
 		in.WantComma()
 	}
 	in.Delim('}')
+
 	if isTopLevel {
 		in.Consumed()
 	}
@@ -256,6 +274,7 @@ func easyjson8cf7917eEncodeGithubComAntholordPoeIndexerApi1(out *jwriter.Writer,
 }
 func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, out *Item, p *custom.CustomParser) {
 	var cp custom.CProperties
+	cp.Mods = make([]custom.Mod,0,7)
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -276,11 +295,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		switch key {
 		case "league":
 			out.League = string(in.String())
-			/*if (out.League == "Standard" || out.League == "Hardcore" || strings.Contains(out.League, "SSF")){
-				in.Delim('}')
-				in.Skip()
-				continue;
-			}*/
+
 		case "name":
 			out.Name = Reg.ReplaceAllString(string(in.String()), "")
 
@@ -385,9 +400,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.ExplicitMods = (out.ExplicitMods)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v10 string
-					v10 = string(in.String())
-					out.ExplicitMods = append(out.ExplicitMods, v10)
+					mod :=string(in.String())
+					cp.Mods = append(cp.Mods,ParseMods(mod))
+					out.ExplicitMods = append(out.ExplicitMods, mod)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -408,9 +423,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.ImplicitMods = (out.ImplicitMods)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v11 string
-					v11 = string(in.String())
-					out.ImplicitMods = append(out.ImplicitMods, v11)
+					mod :=string(in.String())
+					cp.Mods = append(cp.Mods,ParseMods(mod))
+					out.ImplicitMods = append(out.ImplicitMods, mod)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -431,9 +446,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.UtilityMods = (out.UtilityMods)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v12 string
-					v12 = string(in.String())
-					out.UtilityMods = append(out.UtilityMods, v12)
+					mod :=string(in.String())
+					cp.Mods = append(cp.Mods,ParseMods(mod))
+					out.UtilityMods = append(out.UtilityMods, mod)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -454,9 +469,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.EnchantMods = (out.EnchantMods)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v13 string
-					v13 = string(in.String())
-					out.EnchantMods = append(out.EnchantMods, v13)
+					mod :=string(in.String())
+					cp.Mods = append(cp.Mods,ParseMods(mod))
+					out.EnchantMods = append(out.EnchantMods, mod)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -477,9 +492,9 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.CraftedMods = (out.CraftedMods)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v14 string
-					v14 = string(in.String())
-					out.CraftedMods = append(out.CraftedMods, v14)
+					mod :=string(in.String())
+					cp.Mods = append(cp.Mods,ParseMods(mod))
+					out.CraftedMods = append(out.CraftedMods, mod)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -612,7 +627,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 		out.FName = out.Name + out.Type
 	}
 	out.FNameUpper = strings.ToUpper(out.FName)
-	//if (out.FrameType == 1) {log.Println(out.FName, "---", out.Type)}
+	//log.Println(out.CProperties.Mods)
 
 	in.Delim('}')
 	if isTopLevel {
@@ -1080,38 +1095,35 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi3(in *jlexer.Lexer, ou
 							v40 = (v40)[:0]
 						}
 						for !in.IsDelim(']') {
-							var v41 interface{}
+							//var v41 interface{}
 							index++
 							if (index == 2){
 								in.Skip()
 							}else{
-								v41 = in.Interface()
 								switch out.Name {
 								case "Armour" :
-									cp.Armour, _ = v41.(float64)
+									cp.Armour = in.IntStr()
 								case "Evasion Rating" :
-									cp.Evasion, _ = v41.(float64)
+									cp.Evasion= in.IntStr()
 								case "Energy Shield" :
-									cp.Es, _ = v41.(float64)
+									cp.Es= in.IntStr()
 								case "Map Tier" :
-									cp.MapTier, _ = v41.(float64)
+									cp.MapTier= in.IntStr()
 								case "Critical Strike Chance" :
-									s, _ := v41.(string)
-									cp.Crit, _ = strconv.ParseFloat(s, 10)
+									//in.Skip()
+									s , _:= strconv.ParseFloat(strings.TrimSuffix(in.String(), "%"), 64)
+									cp.Crit = s
 								case "Physical Damage" :
-									cp.Phys = custom.ParseDmgRange(v41)
+									cp.Phys = custom.ParseDmgRange(in.String())
 								case "Chaos Damage" :
-									cp.Chaos = custom.ParseDmgRange(v41)
+									cp.Chaos = custom.ParseDmgRange(in.String())
 								case "Attacks per Second" :
-									s, _ := v41.(string)
-									cp.APS, _ = strconv.ParseFloat(s, 10)
+									cp.APS, _ = strconv.ParseFloat(in.String(), 64)
 								case "Block" :
-									s, _ := v41.(string)
-									cp.Block, _ = strconv.ParseFloat(s, 10)
+									cp.Block, _ = strconv.ParseFloat(in.String(), 64)
 								case "Elemental Damage" :
-									cp.Ele+= custom.ParseDmgRange(v41)
-								}
-								v40 = append(v40, v41)
+									cp.Ele+= custom.ParseDmgRange(in.String())
+								default : in.Skip()}
 							}
 							in.WantComma()
 						}
@@ -1130,6 +1142,7 @@ func easyjson8cf7917eDecodeGithubComAntholordPoeIndexerApi3(in *jlexer.Lexer, ou
 		in.WantComma()
 	}
 	in.Delim('}')
+
 	if isTopLevel {
 		in.Consumed()
 	}
@@ -1186,4 +1199,29 @@ func easyjson8cf7917eEncodeGithubComAntholordPoeIndexerApi3(out *jwriter.Writer,
 	out.RawString("\"displayMode\":")
 	out.Int(int(in.DisplayMode))
 	out.RawByte('}')
+}
+
+func ParseMods(s string) custom.Mod {
+	values := ModReg.FindAllString(s, 4)
+	var x custom.Mod
+	if (values != nil){
+		//log.Println(values)
+		output := ModReg.ReplaceAllString(s, "#")
+		//log.Println(output)
+		//log.Println(values[0])
+		x.ModStr = output
+		for i, v := range values {
+			if (i==0){
+				var v1, err = strconv.ParseFloat(v, 64); if err== nil {
+					x.Value1 = v1
+				}
+			}else{
+				var v2, err2 = strconv.ParseFloat(v, 64); if err2== nil {
+					x.Value2 = v2
+				}
+				break
+			}
+		}
+	}
+	return x
 }

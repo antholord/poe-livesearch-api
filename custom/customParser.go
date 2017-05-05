@@ -5,6 +5,8 @@ import (
 	"github.com/antholord/poeIndexer/itemData"
 	"encoding/json"
 	"log"
+	"gopkg.in/mgo.v2"
+	//"gopkg.in/mgo.v2/bson"
 )
 
 type Category struct {
@@ -14,11 +16,21 @@ type Category struct {
 type CustomParser struct {
 	BasesMap map[string]Category
 	ItemsMap map[string]bool
+	ModsMap map[string]bool
+	session *mgo.Session
 }
 func NewCustomParser() *CustomParser {
+	session, err := mgo.Dial("mongodb://test:test@ds123371.mlab.com:23371/heroku_lnc7sl64")
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+
 	return &CustomParser{
 		BasesMap : ParseItemTypes(),
 		ItemsMap : ParseItems(),
+		ModsMap : make(map[string]bool),
+		session : session,
 	}
 }
 

@@ -63,6 +63,7 @@ func (s *PublicStashTabSubscription) run(firstChangeId string) {
 		case <-s.closeChannel:
 			return
 		default:
+
 			response, err := http.Get("https://" + s.host + "/api/public-stash-tabs?id=" + url.QueryEscape(nextChangeId))
 			if err != nil {
 				s.Channel <- PublicStashTabSubscriptionResult{
@@ -76,6 +77,7 @@ func (s *PublicStashTabSubscription) run(firstChangeId string) {
 			//respString,err :=ioutil.ReadAll(response.Body)
 			//log.Println(string(respString))
 			err = easyjson.UnmarshalFromReader(response.Body, tabs)
+
 			//s.customParser.addCategories(&tabs)
 			//decoder := json.NewDecoder(response.Body)
 			//err = decoder.Decode(tabs)

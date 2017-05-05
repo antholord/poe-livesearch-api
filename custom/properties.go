@@ -5,10 +5,16 @@ import (
 	"strconv"
 )
 
+type Mod struct {
+	ModStr string `json:"modStr"`
+	Value1 float64 `json:"value1"`
+	Value2 float64 `json:"value2"`
+}
+
 type CProperties struct {
-	Armour  float64 `json:"armour"`
-	Es      float64 `json:"es"`
-	Evasion float64 `json:"evasion"`
+	Armour  int `json:"armour"`
+	Es      int `json:"es"`
+	Evasion int `json:"evasion"`
 	Block   float64 `json:"block"`
 	Crit    float64 `json:"crit"`
 	Quality float64 `json:"quality"`
@@ -16,7 +22,7 @@ type CProperties struct {
 	Type string `json:"type"`
 	Category string `json:"category"`
 	SubCategory string `json:"subCategory"`
-	MapTier float64 `json:"mapTier"`
+	MapTier int `json:"mapTier"`
 
 	APS   float64 `json:"aps"`
 	Phys  float64 `json:"phys"`
@@ -26,12 +32,14 @@ type CProperties struct {
 	Pdps  float64 `json:"pdps"`
 	Edps  float64 `json:"edps"`
 	Dps   float64 `json:"dps"`
+
+	Mods []Mod `json:"mods"`
 }
 
-func ParseDmgRange(s interface{}) float64 {
-	arr := strings.Split(s.(string), "-")
-	f1, _:= strconv.ParseFloat(arr[0], 10)
-	f2, _:= strconv.ParseFloat(arr[1], 10)
+func ParseDmgRange(s string) float64 {
+	arr := strings.Split(s, "-")
+	f1, _:= strconv.ParseFloat(arr[0], 32)
+	f2, _:= strconv.ParseFloat(arr[1], 32)
 	return (f1 + f2) / 2
 }
 

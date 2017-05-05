@@ -14,6 +14,7 @@ func processStash(stash *api.Stash, m *subscription.Manager) {
 	for _, item := range stash.Items {
 		for itemSearch, clients := range m.SubMap {
 			if matchesCriterias(&itemSearch, &item) {
+				//log.Println(item.CProperties)
 				go broadcast(clients, api.ItemResult{item, stash.AccountName, stash.LastCharacterName, stash.Id, stash.Label, stash.Type, ""})
 			}
 		}

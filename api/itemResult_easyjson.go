@@ -4,6 +4,7 @@ package api
 
 import (
 	json "encoding/json"
+	custom "github.com/antholord/poeIndexer/custom"
 	easyjson "github.com/mailru/easyjson"
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
@@ -155,6 +156,10 @@ func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerApi1(in *jlexer.Lexer, ou
 			out.Name = string(in.String())
 		case "typeLine":
 			out.Type = string(in.String())
+		case "FName":
+			out.FName = string(in.String())
+		case "FNameUpper":
+			out.FNameUpper = string(in.String())
 		case "properties":
 			if in.IsNull() {
 				in.Skip()
@@ -201,6 +206,8 @@ func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerApi1(in *jlexer.Lexer, ou
 				}
 				in.Delim(']')
 			}
+		case "customProperties":
+			easyjsonE73e0852DecodeGithubComAntholordPoeIndexerCustom(in, &out.CProperties)
 		case "sockets":
 			if in.IsNull() {
 				in.Skip()
@@ -492,6 +499,18 @@ func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerApi1(out *jwriter.Writer,
 		out.RawByte(',')
 	}
 	first = false
+	out.RawString("\"FName\":")
+	out.String(string(in.FName))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"FNameUpper\":")
+	out.String(string(in.FNameUpper))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
 	out.RawString("\"properties\":")
 	if in.Properties == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
@@ -522,6 +541,12 @@ func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerApi1(out *jwriter.Writer,
 		}
 		out.RawByte(']')
 	}
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"customProperties\":")
+	easyjsonE73e0852EncodeGithubComAntholordPoeIndexerCustom(out, in.CProperties)
 	if !first {
 		out.RawByte(',')
 	}
@@ -890,6 +915,292 @@ func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerApi3(out *jwriter.Writer,
 	out.String(string(in.Attribute))
 	out.RawByte('}')
 }
+func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerCustom(in *jlexer.Lexer, out *custom.CProperties) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "armour":
+			out.Armour = int(in.Int())
+		case "es":
+			out.Es = int(in.Int())
+		case "evasion":
+			out.Evasion = int(in.Int())
+		case "block":
+			out.Block = float64(in.Float64())
+		case "crit":
+			out.Crit = float64(in.Float64())
+		case "quality":
+			out.Quality = float64(in.Float64())
+		case "weaponRange":
+			out.WeaponRange = float64(in.Float64())
+		case "type":
+			out.Type = string(in.String())
+		case "category":
+			out.Category = string(in.String())
+		case "subCategory":
+			out.SubCategory = string(in.String())
+		case "mapTier":
+			out.MapTier = int(in.Int())
+		case "aps":
+			out.APS = float64(in.Float64())
+		case "phys":
+			out.Phys = float64(in.Float64())
+		case "ele":
+			out.Ele = float64(in.Float64())
+		case "chaos":
+			out.Chaos = float64(in.Float64())
+		case "cdps":
+			out.Cdps = float64(in.Float64())
+		case "pdps":
+			out.Pdps = float64(in.Float64())
+		case "edps":
+			out.Edps = float64(in.Float64())
+		case "dps":
+			out.Dps = float64(in.Float64())
+		case "mods":
+			if in.IsNull() {
+				in.Skip()
+				out.Mods = nil
+			} else {
+				in.Delim('[')
+				if out.Mods == nil {
+					if !in.IsDelim(']') {
+						out.Mods = make([]custom.Mod, 0, 2)
+					} else {
+						out.Mods = []custom.Mod{}
+					}
+				} else {
+					out.Mods = (out.Mods)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v34 custom.Mod
+					easyjsonE73e0852DecodeGithubComAntholordPoeIndexerCustom1(in, &v34)
+					out.Mods = append(out.Mods, v34)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerCustom(out *jwriter.Writer, in custom.CProperties) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"armour\":")
+	out.Int(int(in.Armour))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"es\":")
+	out.Int(int(in.Es))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"evasion\":")
+	out.Int(int(in.Evasion))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"block\":")
+	out.Float64(float64(in.Block))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"crit\":")
+	out.Float64(float64(in.Crit))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"quality\":")
+	out.Float64(float64(in.Quality))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"weaponRange\":")
+	out.Float64(float64(in.WeaponRange))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"type\":")
+	out.String(string(in.Type))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"category\":")
+	out.String(string(in.Category))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"subCategory\":")
+	out.String(string(in.SubCategory))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"mapTier\":")
+	out.Int(int(in.MapTier))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"aps\":")
+	out.Float64(float64(in.APS))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"phys\":")
+	out.Float64(float64(in.Phys))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"ele\":")
+	out.Float64(float64(in.Ele))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"chaos\":")
+	out.Float64(float64(in.Chaos))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"cdps\":")
+	out.Float64(float64(in.Cdps))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"pdps\":")
+	out.Float64(float64(in.Pdps))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"edps\":")
+	out.Float64(float64(in.Edps))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"dps\":")
+	out.Float64(float64(in.Dps))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"mods\":")
+	if in.Mods == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		out.RawString("null")
+	} else {
+		out.RawByte('[')
+		for v35, v36 := range in.Mods {
+			if v35 > 0 {
+				out.RawByte(',')
+			}
+			easyjsonE73e0852EncodeGithubComAntholordPoeIndexerCustom1(out, v36)
+		}
+		out.RawByte(']')
+	}
+	out.RawByte('}')
+}
+func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerCustom1(in *jlexer.Lexer, out *custom.Mod) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "modStr":
+			out.ModStr = string(in.String())
+		case "value1":
+			out.Value1 = float64(in.Float64())
+		case "value2":
+			out.Value2 = float64(in.Float64())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerCustom1(out *jwriter.Writer, in custom.Mod) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"modStr\":")
+	out.String(string(in.ModStr))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"value1\":")
+	out.Float64(float64(in.Value1))
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"value2\":")
+	out.Float64(float64(in.Value2))
+	out.RawByte('}')
+}
 func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, out *ItemProperty) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
@@ -927,36 +1238,36 @@ func easyjsonE73e0852DecodeGithubComAntholordPoeIndexerApi2(in *jlexer.Lexer, ou
 					out.Values = (out.Values)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v34 []interface{}
+					var v37 []interface{}
 					if in.IsNull() {
 						in.Skip()
-						v34 = nil
+						v37 = nil
 					} else {
 						in.Delim('[')
-						if v34 == nil {
+						if v37 == nil {
 							if !in.IsDelim(']') {
-								v34 = make([]interface{}, 0, 4)
+								v37 = make([]interface{}, 0, 4)
 							} else {
-								v34 = []interface{}{}
+								v37 = []interface{}{}
 							}
 						} else {
-							v34 = (v34)[:0]
+							v37 = (v37)[:0]
 						}
 						for !in.IsDelim(']') {
-							var v35 interface{}
-							if m, ok := v35.(easyjson.Unmarshaler); ok {
+							var v38 interface{}
+							if m, ok := v38.(easyjson.Unmarshaler); ok {
 								m.UnmarshalEasyJSON(in)
-							} else if m, ok := v35.(json.Unmarshaler); ok {
+							} else if m, ok := v38.(json.Unmarshaler); ok {
 								m.UnmarshalJSON(in.Raw())
 							} else {
-								v35 = in.Interface()
+								v38 = in.Interface()
 							}
-							v34 = append(v34, v35)
+							v37 = append(v37, v38)
 							in.WantComma()
 						}
 						in.Delim(']')
 					}
-					out.Values = append(out.Values, v34)
+					out.Values = append(out.Values, v37)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -992,24 +1303,24 @@ func easyjsonE73e0852EncodeGithubComAntholordPoeIndexerApi2(out *jwriter.Writer,
 		out.RawString("null")
 	} else {
 		out.RawByte('[')
-		for v36, v37 := range in.Values {
-			if v36 > 0 {
+		for v39, v40 := range in.Values {
+			if v39 > 0 {
 				out.RawByte(',')
 			}
-			if v37 == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			if v40 == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 				out.RawString("null")
 			} else {
 				out.RawByte('[')
-				for v38, v39 := range v37 {
-					if v38 > 0 {
+				for v41, v42 := range v40 {
+					if v41 > 0 {
 						out.RawByte(',')
 					}
-					if m, ok := v39.(easyjson.Marshaler); ok {
+					if m, ok := v42.(easyjson.Marshaler); ok {
 						m.MarshalEasyJSON(out)
-					} else if m, ok := v39.(json.Marshaler); ok {
+					} else if m, ok := v42.(json.Marshaler); ok {
 						out.Raw(m.MarshalJSON())
 					} else {
-						out.Raw(json.Marshal(v39))
+						out.Raw(json.Marshal(v42))
 					}
 				}
 				out.RawByte(']')
