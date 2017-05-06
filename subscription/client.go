@@ -31,7 +31,7 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
 		log.Println(r.Host)
-		if r.Host == "poe-livesearch-api.herokuapp.com" || r.Host == "localhost:1337" {
+		if r.Host == "poe-livesearch-api.herokuapp.com" || r.Host == "localhost:1337" || r.Host == "poesearch.live" {
 			return true
 		} else {
 			return false
