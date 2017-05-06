@@ -33,6 +33,11 @@
 			"Rev": "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 		},
 		{
+			"ImportPath": "gopkg.in/mgo.v2/bson",
+			"Comment": "r2016.08.01-5-g3f83fa5",
+			"Rev": "3f83fa5005286a7fe593b055f0d7771a7dce4655"
+		},
+		{
 			"ImportPath": "gopkg.in/mgo.v2/internal/json",
 			"Comment": "r2016.08.01-5-g3f83fa5",
 			"Rev": "3f83fa5005286a7fe593b055f0d7771a7dce4655"
