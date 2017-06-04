@@ -3,6 +3,7 @@ package subscription
 import (
 	"strings"
 	"github.com/antholord/poeIndexer/custom"
+	"github.com/antholord/poeIndexer/api"
 )
 
 type NameObj struct {
@@ -51,6 +52,7 @@ type ItemSearch struct {
 	Edps  float64
 	Dps   float64
 
+	Mods *[]api.MinMaxStr
 	CustomParser *custom.CustomParser
 }
 

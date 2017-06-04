@@ -69,6 +69,8 @@ func (manager *Manager) ServeWs(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+	_, searchJSON, err := conn.ReadMessage()
+	log.Println(searchJSON)
 
 	minSockets, err := strconv.ParseInt(r.FormValue("minSockets"), 10, 32)
 	maxSockets, err := strconv.ParseInt(r.FormValue("maxSockets"), 10, 32)

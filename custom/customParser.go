@@ -22,7 +22,7 @@ type CustomParser struct {
 func NewCustomParser() *CustomParser {
 	session, err := mgo.Dial("mongodb://test:test@ds123371.mlab.com:23371/heroku_lnc7sl64")
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	defer session.Close()
 
